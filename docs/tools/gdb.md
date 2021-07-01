@@ -1,0 +1,1 @@
+[嵌入html表格](tools/generate_core_via_gdb.md)
