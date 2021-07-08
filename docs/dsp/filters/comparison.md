@@ -11,7 +11,7 @@
 
 
 </td>
-<td> <img src=bessel_proto.png/>
+<td> <img src="bessel_proto.png" width="600"/>
 </td>
 <td>模拟 Bessel 低通滤波器在零频率处具有最大平坦度的群延迟，并且在整个通带内保持几乎恒定的群延迟。因此，滤波后的信号在通带频率范围内保持其波形。当模拟 Bessel 低通滤波器通过频率映射转换为数字滤波器时，它不再具有这种最大平坦属性。Signal Processing Toolbox™ 仅支持使用完整 Bessel 设计函数实现模拟滤波器。
 
@@ -87,7 +87,7 @@
 <td>
 [b,a] = yulewalk(n,f,m)
 </td>
-<td>
+<td><img src="yulewalk.png"/>
 </td>
 <td>这些方法基于离散域中的设定设计滤波器。与模拟原型方法不同，直接设计方法不受标准低通、高通、带通或带阻配置的约束。相反，这些函数设计的滤波器具有任意（也许是多频带）频率响应。
 
