@@ -1,11 +1,14 @@
-math formular
+## math formular
 
 
-$$\alpha$$
 
-$$\sin^2 x+\cos^ x =1 $$
+*...* in LaTeX code should not be italic:
 
+$$ f(x) = 5 \tag{1} $$
 
-``` tex
-	\sin^2 x+\cos^ x =1 
-```
+_..._ in LaTeX code should not be italic:
+
+$$ f(x) = 5 \tag{2} $$
+
+$$ f(x) = 5 \\\\
+f(x) = 5  $$
