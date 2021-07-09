@@ -1,28 +1,54 @@
-
-%% 将正弦波做FFT计算，50%的重叠。验证IFFT的计算——对比自带函数IFFT函数，和对FFT结果取共轭，再进行FFT计算的区别。
 clear;clf;
-Fs=24000;t = 0:1/Fs:0.07;y=sin(200*2*pi*t+50);      % 24k采样率下，生成200Hz、0.07秒正弦波
-i=(floor(length(y)/512)-1)*2;                       % 因为分帧计算，这里计算循环次数。因为要50%的重叠，所以需要乘以2
-yfft=zeros(1,length(y));            % 初始化函数
-yifft=zeros(1,length(y));           % 初始化函数
-Windows=hamming(512);               % 取窗函数
+
+T = 0.10
+Fs=10240; t = 0:1/Fs:T-1/Fs;      % 24k采样率下，生成0.01秒正弦波
+% x(t)=\frac{1}{3}(sin(40*2*\pi*t)+sin(160*2*\pi*t)+sin(320*2*\pi*t))
+x = (2*sin(40*2*pi*t)+sin(160*2*pi*t)+sin(320*2*pi*t))/4;
+y = (2*sin(37.5*2*pi*t)+sin(160*2*pi*t)+sin(320*2*pi*t))/4;  % 在T时刻第一项不为Pi整数，值不为0
+z = (2*sin(35*2*pi*t)+sin(160*2*pi*t)+sin(320*2*pi*t))/4;
+
+N = length(x);
+X=zeros(1,N);           % 初始化函数
+Y=zeros(1,N);           % 初始化函数
+
+f = 0:Fs/N:Fs-Fs/N;
+
+figure(1)
+
+subplot(211); plot(t, x, '-', t, y, '-', t, z, '-'); legend('pefect', 'leaked', 'leaked2'); grid on
+subplot(212); semilogx(f, abs(fft(x)), f, abs(fft(y)), f, abs(fft(z))); 
+legend('perfect', 'leaked', 'leaked2'); grid on
+
+wvtool(y)
+wvtool(z)
+
+%% 加窗
+
+M = 256
+i=(floor(length(y)/M)-1)*2;      % 因为分帧计算，这里计算循环次数。因为要50%的重叠，所以需要乘以2
+Window=hamming(M);               % 取窗函数
 for a =0:i
-    StartPoint=1+256*a;            
-    y0(1:512)=y(StartPoint:(StartPoint+512-1)); %取每次要处理的512个数据
-    y0=y0.*Windows';                % 加窗
-    TempData=fft(y0);               % 做FFT计算
-    Yifft=ifft(TempData);           % MATLAB自带IFFT函数
-    Yfft=conj(TempData);            % 取共轭复数
-    Yfft=fft(Yfft);                 % 虚部取反做FFT计算
-    Yfft=(real(Yfft)/512)*0.98;     % 取出实部，并对其除以N。乘以0.98为了做图进行对比
-    yfft(StartPoint:StartPoint+512-1)=yfft(StartPoint:StartPoint+512-1)+Yfft;       %重组
-    yifft(StartPoint:StartPoint+512-1)=yifft(StartPoint:StartPoint+512-1)+Yifft;    %重组
+    start=1+a*M/2;
+    x0=x(start:(start+M-1)); %取每次要处理的M/2个数据
+    y0=y(start:(start+M-1)); 
+    x0=x0.*Window';                % 加窗
+    y0=y0.*Window';                
+    X(start:start+M-1)=X(start:start+M-1)+x0;       %重组
+    Y(start:start+M-1)=Y(start:start+M-1)+y0;       %重组
 end
-%% 作图
-figure(1);
-plot(y,'*');            hold on
-plot(yfft,'r');         hold on ;
-plot(yifft,'k');        grid on
-legend('原信号时域','虚部取反做fft时域','Ifft时域');
-xlabel('时域（t）');
-ylabel('幅值');
+
+figure(2)
+f = 0:Fs/N:Fs-Fs/N;
+subplot(221); plot(t, x, t, X); legend('orignal', 'windowed'); grid on
+subplot(222); semilogx(f, abs(fft(x)), f, abs(fft(X))); 
+legend('orignal', 'windowed'); grid on
+subplot(223); plot(t, y, t, Y); legend('orignal', 'windowed'); grid on
+subplot(224); semilogx(f, abs(fft(y)), f, abs(fft(Y)));
+legend('orignal', 'windowed'); grid on
+
+wvtool(x)
+wvtool(X)
+% figure(3)
+wvtool(y)
+wvtool(Y)
+
