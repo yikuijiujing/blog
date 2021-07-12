@@ -8,10 +8,20 @@ y = (2*sin(37.5*2*pi*t)+sin(160*2*pi*t)+sin(320*2*pi*t))/4;  % 在T时刻第一�
 z = (2*sin(35*2*pi*t)+sin(160*2*pi*t)+sin(320*2*pi*t))/4;
 
 N = length(x);
+% 检查实际数据确认是否泄露
+X = abs(fft(x));
+X(find(X>0.0001))
+
+% 快速傅里叶变换引入的泄露
+X = abs(fft(x, 2*N)/2/N);
+f = 0:Fs/2/N:Fs-Fs/2/N;
+semilogx(f, X);
+
+%%
+
 X=zeros(1,N);           % 初始化函数
 Y=zeros(1,N);           % 初始化函数
 
-f = 0:Fs/N:Fs-Fs/N;
 
 figure(1)
 
