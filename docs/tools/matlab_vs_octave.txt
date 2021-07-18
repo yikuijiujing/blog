@@ -1,0 +1,13 @@
+可以使用以下测试将Octave与MATLAB区别开来:
+
+isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
+
+
+#!/usr/bin/octave -qf 
+
+arg_list = argv(); 
+filename = arg_list{1}; 
+load("-ascii",filename); 
+当你写了load filename你指定的加载函数加载文件名“文件名”。也就是说，你做了相当于load('filename');的事情。
+
+在MATLAB和Octave中，函数“foo”后面跟着一个空格，那么单词“bar”表示bar将作为字符串提交给foo。即使bar是工作区中的已定义变量，情况也是如此。
