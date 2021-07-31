@@ -22,41 +22,38 @@
     cd ~/.pyenv && src/configure && make -C src
    ```
 
-3. Put these lines into `~/.profile` *before* the part that sources `~/.bashrc`:
+3. Execute the follwing script
 
-   ```bash
-   export PYENV_ROOT="$HOME/.pyenv"
-   export PATH="$PYENV_ROOT/bin:$PATH"
    ```
-
-4. And put this line at the *bottom* of `~/.profile`:
-
-   ```bash
-   eval "$(pyenv init --path)"
-   ```
-
-4. Add `pyenv` into your shell by running the output of `pyenv init -` to enable autocompletion and all subcommands.
-
-   ```bash
+   echo -e 'if shopt -q login_shell; then' \
+         '\n  export PYENV_ROOT="$HOME/.pyenv"' \
+         '\n  export PATH="$PYENV_ROOT/bin:$PATH"' \
+         '\n eval "$(pyenv init --path)"' \
+         '\nfi' >> ~/.bashrc
+   echo -e 'if [ -z "$BASH_VERSION" ]; then'\
+         '\n  export PYENV_ROOT="$HOME/.pyenv"'\
+         '\n  export PATH="$PYENV_ROOT/bin:$PATH"'\
+         '\n  eval "$(pyenv init --path)"'\
+         '\nfi' >>~/.profile
    echo 'eval "$(pyenv init -)"' >> ~/.bashrc
    ```
 
-5. **Restart your login session for the changes to take effect.**
+4. **Restart your login session for the changes to take effect.**
 
-6. Install Python versions into `$(pyenv root)/versions`. For DSP development
+5. Install Python versions into `$(pyenv root)/versions`. For DSP development
 
    ```bash
    pyenv install --list |grep miniconda3
    pyenv install miniconda3-4.7.12
    ```
 
-7. Switch to the new installed version
+6. Switch to the new installed version
 
    ```bash
    pyenv shell miniconda3-4.7.12
    ```
 
-8. Set the new installed version as the default version
+7. Set the new installed version as the default version
 
    ```bash
    pyenv global miniconda3-4.7.12
@@ -66,7 +63,7 @@
 
 Pyenv configuration layers
 
-<img src="D:\blog\docs\tools\pyenv-pyramid.png" alt="pyenv配置顺序" style="zoom:50%;" />
+![pyenv配置顺序](pyenv-pyramid.png)
 
 参考：
 
