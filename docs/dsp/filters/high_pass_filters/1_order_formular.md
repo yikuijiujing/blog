@@ -34,3 +34,20 @@ $H(z)=\frac{Y(n)}{X(n)}=\frac{1-z^{-1}}{\frac{RC+T}{RC}-z^{-1}}=\frac{z-1}{\frac
 $H(z)=\frac{\ln z}{\ln z + \frac{T}{RC}}$
 通常看到的有理函数都是它的近似。另外也能看到它跟s域的传递函数是不可能一样的。
 
+[一阶高通滤波器_WJsuperrunner-CSDN博客](https://blog.csdn.net/superrunner_wujin/article/details/73526409?locationNum=3&fps=1)
+
+#### 截至频率
+
+高通滤波器的传递函数为 $H(s)=\frac{s}{s+\frac{1}{RC}}\equiv \frac{s}{s+\tau}$和 $H(z)=\frac{RC}{RC+T}\cdot\frac{1-z^{-1}}{1- \frac{RC}{RC+T}z^{-1}}$
+
+下面计算截至频率和相角
+
+$H(j\omega)=\frac{j\omega}{j\omega+\tau}=\frac{j\omega(\tau-j\omega)}{(j\omega+\tau)(\tau-j\omega)}=\frac{\omega^2}{\tau^2+\omega^2}+j\frac{\omega\tau}{\tau^2+\omega^2}$
+
+
+
+$A^2(\omega)=\frac{\omega^2}{\omega^2+\tau^2}$
+
+$\Omega(\omega)=arctan(\frac{\tau}{\omega})$
+
+截至频率的点$A^2(\omega)=\frac{1}{2}$，即 $\omega=\tau$，此时$\Omega(\tau)=\frac{\pi}{4}$
